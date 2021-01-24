@@ -23,9 +23,6 @@ public class VehicleInsurerService {
 	}
 	
 	public VehicleInsurer findById(String id) {
-		if (id.isBlank() || id.isEmpty()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		Optional<VehicleInsurer> insurer = this.repository.findById(id);
 		return insurer.orElseThrow(() -> new ObjectNotFoundException("There isn't a insurer using this id"));
 	}
@@ -41,9 +38,7 @@ public class VehicleInsurerService {
 	}
 	
 	public void deleteById(String id) {
-		if (id.isBlank() || id.isEmpty()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
+		this.findById(id);
 		this.repository.deleteById(id);
 	}
 	

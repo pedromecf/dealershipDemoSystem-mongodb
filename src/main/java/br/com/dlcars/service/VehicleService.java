@@ -23,9 +23,6 @@ public class VehicleService {
 	}
 
 	public List<Vehicle> findAllByType(String type) {
-		if (type.isBlank() || type.isEmpty()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		List<Vehicle> allVehicles = this.repository.findAll();
 		List<Vehicle> typeVehicles = new ArrayList<>();
 		for (Vehicle v : allVehicles) {
@@ -34,15 +31,12 @@ public class VehicleService {
 			}
 		}
 		if (typeVehicles.isEmpty()) {
-			throw new ObjectNotFoundException("The type used in search doesn't exists");
+			throw new ObjectNotFoundException("The parameter used in search doesn't exists");
 		}
 		return typeVehicles;
 	}
 
 	public List<Vehicle> findAllByBrand(String brand) {
-		if (brand.isEmpty() || brand.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		List<Vehicle> allVehicles = this.repository.findAll();
 		List<Vehicle> brandVehicles = new ArrayList<>();
 		for (Vehicle v : allVehicles) {
@@ -57,9 +51,6 @@ public class VehicleService {
 	}
 
 	public List<Vehicle> findAllByModel(String model) {
-		if (model.isBlank() || model.isEmpty()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		List<Vehicle> allVehicles = this.findAll();
 		List<Vehicle> modelList = new ArrayList<>();
 		for (Vehicle v : allVehicles) {
@@ -74,19 +65,11 @@ public class VehicleService {
 	}
 
 	public Vehicle findById(String id) {
-		if (id.isBlank() || id.isEmpty()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		Optional<Vehicle> vehicles = this.repository.findById(id);
 		return vehicles.orElseThrow(() -> new ObjectNotFoundException("There isn't a vehicle using this id"));
 	}
 
 	public Vehicle findByLicensePlate(String licensePlate) {
-		if (licensePlate.isEmpty() || licensePlate.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		} else if (licensePlate.length() < 9 || licensePlate.length() > 9) {
-			throw new IllegalArgumentException("The plate must follow the pattern (Example: XXXX-XXXX)");
-		}
 		Vehicle vehicle = new Vehicle();
 		List<Vehicle> vehicles = this.findAll();
 		for (Vehicle v : vehicles) {
@@ -105,23 +88,17 @@ public class VehicleService {
 	}
 
 	public Vehicle update(Vehicle obj) {
-			Vehicle newObj = findById(obj.getId());
-			this.updateVehicleData(obj, newObj);
-			return this.repository.save(newObj);
+		Vehicle newObj = findById(obj.getId());
+		this.updateVehicleData(obj, newObj);
+		return this.repository.save(newObj);
 	}
 
 	public void deleteById(String id) {
-		if (id.isEmpty() || id.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		findById(id);
-		this.repository.deleteById(id); 
+		this.repository.deleteById(id);
 	}
 
 	public void deleteByBrand(String brand) {
-		if (brand.isEmpty() || brand.isEmpty()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		List<Vehicle> allVehicles = this.findAll();
 		List<Vehicle> brandVehicles = new ArrayList<>();
 		for (Vehicle v : allVehicles) {
@@ -130,15 +107,12 @@ public class VehicleService {
 			}
 		}
 		if (brandVehicles.isEmpty()) {
-			throw new ObjectNotFoundException("The vehicle doesn't exists");
+			throw new ObjectNotFoundException("The brand doesn't exists");
 		}
 		this.repository.deleteAll(brandVehicles);
 	}
 
 	public void deleteByModel(String model) {
-		if (model.isEmpty() || model.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		}
 		List<Vehicle> allVehicles = this.findAll();
 		List<Vehicle> modelVehicles = new ArrayList<>();
 		for (Vehicle v : allVehicles) {
@@ -150,27 +124,20 @@ public class VehicleService {
 			throw new ObjectNotFoundException("The vehicle model doesn't exists");
 		}
 		this.repository.deleteAll(modelVehicles);
-
 	}
 
 	public void deleteByLicensePlate(String licensePlate) {
-		if (licensePlate.isEmpty() || licensePlate.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
-		} else if (licensePlate.length() < 9 || licensePlate.length() > 9) {
-			throw new IllegalArgumentException("The plate must follow the pattern (Example: XXXX-XXXX)");
-		}
-		try {
-			List<Vehicle> allVehicles = this.repository.findAll();
-			Vehicle vehicle = new Vehicle();
-			for (Vehicle v : allVehicles) {
-				if (v.getLicensePlate().toUpperCase().equals(licensePlate.toUpperCase())) {
-					this.updateVehicleData(v, vehicle);
-				}
+		List<Vehicle> allVehicles = this.repository.findAll();
+		Vehicle vehicle = new Vehicle();
+		for (Vehicle v : allVehicles) {
+			if (v.getLicensePlate().toUpperCase().equals(licensePlate.toUpperCase())) {
+				this.updateVehicleData(v, vehicle);
 			}
-			this.repository.delete(vehicle);
-		} catch (NullPointerException e) {
-			throw new ObjectNotFoundException("Not found");
 		}
+		if (vehicle.getId() == null) {
+			throw new ObjectNotFoundException("There isn't a vehicle using this license plate");
+		}
+		this.repository.delete(vehicle);
 	}
 
 	public void updateVehicleData(Vehicle obj, Vehicle newObj) {

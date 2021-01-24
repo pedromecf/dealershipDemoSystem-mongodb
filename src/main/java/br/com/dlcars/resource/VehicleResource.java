@@ -24,59 +24,77 @@ import br.com.dlcars.service.VehicleService;
 @RestController
 @RequestMapping(value = "/vehicles")
 public class VehicleResource {
-	
+
 	@Autowired
 	private VehicleService service;
-	
+
 	@GetMapping
 	public ResponseEntity<List<Vehicle>> findAll() {
 		List<Vehicle> vehicles = this.service.findAll();
 		return ResponseEntity.ok().body(vehicles);
 	}
-	
+
 	@GetMapping(value = "/types")
-	public ResponseEntity<List<Vehicle>> findAllByType(@RequestParam(value = "type", required = true) String type) {
-			type = URL.decodeParameter(type);
-			List<Vehicle> vehicles = this.service.findAllByType(type);
-			return ResponseEntity.ok().body(vehicles);
+	public ResponseEntity<List<Vehicle>> findAllByType(@RequestParam(value = "type") String type) {
+		if (type.isEmpty() || type.isBlank()) {
+			throw new IllegalArgumentException("The parameter can't be empty or blank");
+		}
+		type = URL.decodeParameter(type);
+		List<Vehicle> vehicles = this.service.findAllByType(type);
+		return ResponseEntity.ok().body(vehicles);
 	}
-	
+
 	@GetMapping(value = "/brands")
 	public ResponseEntity<List<Vehicle>> findAllByBrand(@RequestParam(value = "brand") String brand) {
+		if (brand.isEmpty() || brand.isBlank()) {
+			throw new IllegalArgumentException("The parameter can't be empty or blank");
+		}
 		brand = URL.decodeParameter(brand);
 		List<Vehicle> vehicles = this.service.findAllByBrand(brand);
 		return ResponseEntity.ok().body(vehicles);
 	}
-	
+
 	@GetMapping(value = "/models")
 	public ResponseEntity<List<Vehicle>> findAllByModel(@RequestParam(value = "model") String model) {
+		if (model.isEmpty() || model.isBlank()) {
+			throw new IllegalArgumentException("The parameter can't be empty or blank");
+		}
 		model = URL.decodeParameter(model);
 		System.out.println(model);
 		List<Vehicle> vehicles = this.service.findAllByModel(model);
 		return ResponseEntity.ok().body(vehicles);
 	}
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Vehicle> findById(@PathVariable String id) {
+		if (id.isEmpty() || id.isBlank()) {
+			throw new IllegalArgumentException("The parameter can't be empty or blank");
+		}
 		Vehicle obj = this.service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	
+
 	@GetMapping(value = "/plates")
 	public ResponseEntity<Vehicle> findByLicensePlate(@RequestParam(value = "plate") String licensePlate) {
+		if (licensePlate.isEmpty() || licensePlate.isBlank()) {
+			throw new IllegalArgumentException("The parameter can't be blank or empty");
+		} else if (licensePlate.length() < 9 || licensePlate.length() > 9) {
+			throw new IllegalArgumentException("The license plate must follow the pattern (Example: XXXX-XXXX)");
+		}
 		Vehicle vehicle = this.service.findByLicensePlate(licensePlate);
 		return ResponseEntity.ok().body(vehicle);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Void> insert(VehicleDto vehicleDto) {
 		String id = vehicleDto.getId();
 		Vehicle vehicle = this.service.fromVehicleDto(vehicleDto, id);
 		vehicle = this.service.insert(vehicle);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(vehicle.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(vehicle.getId())
+				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@RequestBody VehicleDto vehicleDto, @PathVariable String id) {
 		Vehicle vehicle = this.service.fromVehicleDto(vehicleDto, id);
@@ -84,22 +102,31 @@ public class VehicleResource {
 		vehicle = this.service.update(vehicle);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable String id) {
+		if (id.isEmpty() || id.isBlank()) {
+			throw new IllegalArgumentException("The id can't be blank or empty");
+		}
 		this.service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	@DeleteMapping(value = "/brands") 
+
+	@DeleteMapping(value = "/brands")
 	public ResponseEntity<Void> deleteByBrand(@RequestParam(value = "brand") String brand) {
+		if (brand.isEmpty() || brand.isEmpty()) {
+			throw new IllegalArgumentException("The parameter can't be empty or blank");
+		}
 		brand = URL.decodeParameter(brand);
 		this.service.deleteByBrand(brand);
 		return ResponseEntity.noContent().build();
 	}
-	
-	@DeleteMapping(value = "/models") 
+
+	@DeleteMapping(value = "/models")
 	public ResponseEntity<Void> deleteByModel(@RequestParam(value = "model") String model) {
+		if (model.isEmpty() || model.isBlank()) {
+			throw new IllegalArgumentException("The parameter can't be empty or blank");
+		}
 		model = URL.decodeParameter(model);
 		this.service.deleteByModel(model);
 		return ResponseEntity.noContent().build();
@@ -107,6 +134,11 @@ public class VehicleResource {
 
 	@DeleteMapping(value = "/plates")
 	public ResponseEntity<Void> deleteByLicensePlate(@RequestParam(value = "plate") String licensePlate) {
+		if (licensePlate.isEmpty() || licensePlate.isBlank()) {
+			throw new IllegalArgumentException("The parameter can't be empty or blank");
+		} else if (licensePlate.length() < 9 || licensePlate.length() > 9) {
+			throw new IllegalArgumentException("The license plate must follow the pattern (Example: XXXX-XXXX)");
+		}
 		this.service.deleteByLicensePlate(licensePlate);
 		return ResponseEntity.noContent().build();
 	}

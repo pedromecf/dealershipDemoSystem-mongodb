@@ -1,4 +1,4 @@
-package br.com.dlcars.service.exception;
+package br.com.dlcars.resource.exception;
 
 public class InvalidParamException extends RuntimeException {
 	

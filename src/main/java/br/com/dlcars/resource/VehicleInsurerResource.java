@@ -34,6 +34,9 @@ public class VehicleInsurerResource {
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<VehicleInsurer> findById(@PathVariable String id) {
+		if (id.isBlank() || id.isEmpty()) {
+			throw new IllegalArgumentException("The id can't be blank or empty");
+		}
 		VehicleInsurer insurer = this.service.findById(id);
 		return ResponseEntity.ok().body(insurer);
 	}
@@ -49,6 +52,9 @@ public class VehicleInsurerResource {
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@RequestBody VehicleInsurerDto insurerDto, @PathVariable String id) {
+		if (id.isBlank() || id.isEmpty()) {
+			throw new IllegalArgumentException("The id can't be blank or empty");
+		}
 		VehicleInsurer insurer = this.service.fromInsurerDto(insurerDto);
 		insurer.setId(id);
 		return ResponseEntity.noContent().build();
@@ -57,6 +63,9 @@ public class VehicleInsurerResource {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable String id) {
+		if (id.isBlank() || id.isEmpty()) {
+			throw new IllegalArgumentException("The id can't be blank or empty");
+		}
 		this.service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
