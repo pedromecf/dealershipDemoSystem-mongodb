@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.dlcars.model.dto.InsurerVehicleDto;
+
 @Document
+@TypeAlias("Vehicle Insurer")
 public class VehicleInsurer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -17,13 +21,13 @@ public class VehicleInsurer implements Serializable {
 	private String id;
 	private String name;
 
-	@DBRef
-	private List<Vehicle> vehicles = new ArrayList<>();
+	private List<InsurerVehicleDto> vehicles = new ArrayList<>();
 
 	public VehicleInsurer() {
 
 	}
 
+	@PersistenceConstructor
 	public VehicleInsurer(String id, String name) {
 		this.id = id;
 		this.name = name;
@@ -45,7 +49,7 @@ public class VehicleInsurer implements Serializable {
 		this.name = name;
 	}
 
-	public List<Vehicle> getVehicles() {
+	public List<InsurerVehicleDto> getVehicles() {
 		return vehicles;
 	}
 

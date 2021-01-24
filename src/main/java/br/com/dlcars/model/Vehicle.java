@@ -3,35 +3,46 @@ package br.com.dlcars.model;
 import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.dlcars.model.dto.VehicleInsurerDto;
+
 @Document
-public abstract class Vehicle implements Serializable {
+@TypeAlias(value = "Vehicle")
+public class Vehicle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;
+	private String type;
+	private String brand;
 	private String model;
+	private String licensePlate;
 	private Integer quantity;
 	private Double value;
-	private Double consumptionPerKm;
-	private VehicleInsurer carInsurer;
-	private String licensePlate;
+	private Double kmPerLiter;
+	private VehicleInsurerDto insurer;
+	
 
 	public Vehicle() {
-
+		
 	}
 
-	public Vehicle(String id, String model, Integer quantity, Double value, Double consumptionPerKm,
-			VehicleInsurer carInsurer, String licensePlate) {
+	@PersistenceConstructor
+	public Vehicle(String id, String type, String brand, String model, String licensePlate, Integer quantity, Double value, Double kmPerLiter,
+			VehicleInsurerDto insurer) {
 		this.id = id;
+		this.type = type;
+		this.brand = brand;
 		this.model = model;
+		this.licensePlate = licensePlate;
 		this.quantity = quantity;
 		this.value = value;
-		this.consumptionPerKm = consumptionPerKm;
-		this.carInsurer = carInsurer;
-		this.licensePlate = licensePlate;
+		this.kmPerLiter = kmPerLiter;
+		this.insurer = insurer;
 	}
 
 	public String getId() {
@@ -40,6 +51,22 @@ public abstract class Vehicle implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 
 	public String getModel() {
@@ -66,20 +93,20 @@ public abstract class Vehicle implements Serializable {
 		this.value = value;
 	}
 
-	public Double getConsumptionPerKm() {
-		return consumptionPerKm;
+	public Double getKmPerLiter() {
+		return kmPerLiter;
 	}
 
-	public void setConsumptionPerKm(Double consumptionPerKm) {
-		this.consumptionPerKm = consumptionPerKm;
+	public void setKmPerLiter(Double kmPerLiter) {
+		this.kmPerLiter = kmPerLiter;
 	}
 
-	public VehicleInsurer getCarInsurer() {
-		return carInsurer;
+	public VehicleInsurerDto getInsurer() {
+		return insurer;
 	}
 
-	public void setCarInsurer(VehicleInsurer carInsurer) {
-		this.carInsurer = carInsurer;
+	public void setInsurer(VehicleInsurerDto carInsurer) {
+		this.insurer = carInsurer;
 	}
 
 	public String getLicensePlate() {
