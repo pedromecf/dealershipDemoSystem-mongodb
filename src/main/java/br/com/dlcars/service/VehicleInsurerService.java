@@ -33,7 +33,7 @@ public class VehicleInsurerService {
 	
 	public VehicleInsurer update(VehicleInsurer obj) {
 		VehicleInsurer newObj = this.findById(obj.getId());
-		updateInsurerData(obj, newObj);
+		setInsurerData(obj, newObj);
 		return this.repository.save(obj);
 	}
 	
@@ -42,7 +42,7 @@ public class VehicleInsurerService {
 		this.repository.deleteById(id);
 	}
 	
-	public void updateInsurerData(VehicleInsurer obj, VehicleInsurer newObj) {
+	public void setInsurerData(VehicleInsurer obj, VehicleInsurer newObj) {
 		newObj.setId(obj.getId());
 		newObj.setName(obj.getName());
 	}

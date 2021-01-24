@@ -74,7 +74,7 @@ public class VehicleService {
 		List<Vehicle> vehicles = this.findAll();
 		for (Vehicle v : vehicles) {
 			if (v.getLicensePlate().toLowerCase().equals(licensePlate.toLowerCase())) {
-				this.updateVehicleData(v, vehicle);
+				this.setVehicleData(v, vehicle);
 			}
 		}
 		if (vehicle.getId() == null) {
@@ -89,7 +89,7 @@ public class VehicleService {
 
 	public Vehicle update(Vehicle obj) {
 		Vehicle newObj = findById(obj.getId());
-		this.updateVehicleData(obj, newObj);
+		this.setVehicleData(obj, newObj);
 		return this.repository.save(newObj);
 	}
 
@@ -131,7 +131,7 @@ public class VehicleService {
 		Vehicle vehicle = new Vehicle();
 		for (Vehicle v : allVehicles) {
 			if (v.getLicensePlate().toUpperCase().equals(licensePlate.toUpperCase())) {
-				this.updateVehicleData(v, vehicle);
+				this.setVehicleData(v, vehicle);
 			}
 		}
 		if (vehicle.getId() == null) {
@@ -140,7 +140,7 @@ public class VehicleService {
 		this.repository.delete(vehicle);
 	}
 
-	public void updateVehicleData(Vehicle obj, Vehicle newObj) {
+	public void setVehicleData(Vehicle obj, Vehicle newObj) {
 		newObj.setId(obj.getId());
 		newObj.setType(obj.getType());
 		newObj.setBrand(obj.getBrand());
