@@ -7,6 +7,7 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.dlcars.model.dto.DealershipClientDto;
 import br.com.dlcars.model.dto.VehicleInsurerDto;
 
 @Document
@@ -25,15 +26,15 @@ public class Vehicle implements Serializable {
 	private Double value;
 	private Double kmPerLiter;
 	private VehicleInsurerDto insurer;
-	
+	private DealershipClientDto owner;
 
 	public Vehicle() {
-		
+
 	}
 
 	@PersistenceConstructor
-	public Vehicle(String id, String type, String brand, String model, String licensePlate, Integer quantity, Double value, Double kmPerLiter,
-			VehicleInsurerDto insurer) {
+	public Vehicle(String id, String type, String brand, String model, String licensePlate, Integer quantity,
+			Double value, Double kmPerLiter, VehicleInsurerDto insurer) {
 		this.id = id;
 		this.type = type;
 		this.brand = brand;
@@ -60,7 +61,7 @@ public class Vehicle implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getBrand() {
 		return brand;
 	}
@@ -117,11 +118,12 @@ public class Vehicle implements Serializable {
 		this.licensePlate = licensePlate;
 	}
 
-	public boolean vehicleAvailable(Vehicle vehicle) {
-		if (vehicle.getQuantity() == 0) {
-			return false;
-		}
-		return true;
+	public DealershipClientDto getOwner() {
+		return owner;
+	}
+
+	public void setOwner(DealershipClientDto owner) {
+		this.owner = owner;
 	}
 
 	@Override

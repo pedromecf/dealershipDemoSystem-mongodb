@@ -17,8 +17,9 @@ public class ServiceExceptionHandler {
 	@ExceptionHandler(value = ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException error, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.NOT_FOUND;
-		StandardError stError = new StandardError(Instant.now(), status.value(), "Not found", error.getMessage(), request.getRequestURI());
+		StandardError stError = new StandardError(Instant.now(), status.value(), "Not found", error.getMessage(),
+				request.getRequestURI());
 		return ResponseEntity.status(status).body(stError);
 	}
-	
+
 }

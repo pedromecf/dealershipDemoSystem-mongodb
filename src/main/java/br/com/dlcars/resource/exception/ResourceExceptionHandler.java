@@ -11,12 +11,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
-	
+
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	public ResponseEntity<StandardError> invalidParam(IllegalArgumentException error, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
-		StandardError stError = new StandardError(Instant.now(), status.value(), "Invalid parameter", error.getMessage(), request.getRequestURI());
+		StandardError stError = new StandardError(Instant.now(), status.value(), "Invalid parameter",
+				error.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(stError);
 	}
-	
+
+	@ExceptionHandler(value = ObjectUnavailableException.class)
+	public ResponseEntity<StandardError> objectUnavailable(ObjectUnavailableException error,
+			HttpServletRequest request) {
+		HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
+		StandardError stError = new StandardError(Instant.now(), status.value(), "Object Unavailable",
+				error.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(stError);
+	}
+
 }

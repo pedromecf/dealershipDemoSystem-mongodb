@@ -2,22 +2,22 @@ package br.com.dlcars.model.dto;
 
 import java.io.Serializable;
 
-import br.com.dlcars.model.VehicleInsurer;
-
-public class VehicleInsurerDto implements Serializable {
+public class DealershipClientDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String id;
 	private String name;
+	private String email;
 
-	public VehicleInsurerDto() {
+	public DealershipClientDto() {
 
 	}
 
-	public VehicleInsurerDto(VehicleInsurer insurer) {
-		this.id = insurer.getId();
-		this.name = insurer.getName();
+	public DealershipClientDto(ClientDto client) {
+		this.id = client.getId();
+		this.name = client.getName();
+		this.email = client.getEmail();
 	}
 
 	public String getId() {
@@ -34,6 +34,14 @@ public class VehicleInsurerDto implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

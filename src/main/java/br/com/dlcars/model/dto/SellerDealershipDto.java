@@ -2,22 +2,22 @@ package br.com.dlcars.model.dto;
 
 import java.io.Serializable;
 
-import br.com.dlcars.model.VehicleInsurer;
+import br.com.dlcars.model.Dealership;
 
-public class VehicleInsurerDto implements Serializable {
+public class SellerDealershipDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String id;
 	private String name;
 
-	public VehicleInsurerDto() {
+	public SellerDealershipDto() {
 
 	}
 
-	public VehicleInsurerDto(VehicleInsurer insurer) {
-		this.id = insurer.getId();
-		this.name = insurer.getName();
+	public SellerDealershipDto(Dealership dealership) {
+		this.id = dealership.getId();
+		this.name = dealership.getName();
 	}
 
 	public String getId() {

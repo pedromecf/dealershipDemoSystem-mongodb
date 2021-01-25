@@ -7,5 +7,5 @@ import br.com.dlcars.model.VehicleInsurer;
 
 @Repository
 public interface VehicleInsurerRepository extends MongoRepository<VehicleInsurer, String> {
-	
+
 }

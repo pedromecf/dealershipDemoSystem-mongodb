@@ -58,27 +58,27 @@ public class ClientService {
 	public Client insert(Client obj) {
 		return this.repository.save(obj);
 	}
-	
+
 	public Client update(Client obj) {
 		Client newObj = new Client();
 		this.setClientData(newObj, obj);
 		return this.repository.save(newObj);
 	}
-	
+
 	public void deleteById(String id) {
 		this.repository.deleteById(id);
 	}
-	
+
 	public void deleteByCpf(String cpf) {
 		Client client = this.findByCpf(cpf);
 		this.repository.delete(client);
 	}
-	
+
 	public void deleteByCnpj(String cnpj) {
 		Client client = this.findByCnpj(cnpj);
 		this.repository.delete(client);
 	}
-	
+
 	public void setClientData(Client newObj, Client obj) {
 		newObj.setId(obj.getId());
 		newObj.setName(obj.getName());

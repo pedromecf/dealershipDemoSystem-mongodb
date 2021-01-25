@@ -18,7 +18,7 @@ public class VehicleDto implements Serializable {
 	private String licensePlate;
 
 	public VehicleDto() {
-		
+
 	}
 
 	public VehicleDto(Vehicle vehicle) {
@@ -39,7 +39,7 @@ public class VehicleDto implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
@@ -47,7 +47,7 @@ public class VehicleDto implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getBrand() {
 		return brand;
 	}
@@ -95,5 +95,5 @@ public class VehicleDto implements Serializable {
 	public void setLicensePlate(String licensePlate) {
 		this.licensePlate = licensePlate;
 	}
-	
+
 }

@@ -2,7 +2,9 @@ package br.com.dlcars.model.dto;
 
 import java.io.Serializable;
 
-public class InsurerVehicleDto implements Serializable {
+import br.com.dlcars.model.Vehicle;
+
+public class ClientVehicleDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -11,15 +13,15 @@ public class InsurerVehicleDto implements Serializable {
 	private String brand;
 	private String model;
 
-	public InsurerVehicleDto() {
+	public ClientVehicleDto() {
 
 	}
 
-	public InsurerVehicleDto(VehicleDto vehicleDto) {
-		this.id = vehicleDto.getId();
-		this.type = vehicleDto.getType();
-		this.brand = vehicleDto.getBrand();
-		this.model = vehicleDto.getModel();
+	public ClientVehicleDto(Vehicle vehicle) {
+		this.id = vehicle.getId();
+		this.type = vehicle.getType();
+		this.brand = vehicle.getBrand();
+		this.model = vehicle.getModel();
 	}
 
 	public String getId() {

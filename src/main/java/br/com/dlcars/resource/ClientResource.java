@@ -26,13 +26,13 @@ public class ClientResource {
 
 	@Autowired
 	private ClientService service;
-	
+
 	@GetMapping
 	public ResponseEntity<List<Client>> findAll() {
 		List<Client> clients = this.service.findAll();
 		return ResponseEntity.ok().body(clients);
 	}
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Client> findById(@PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
@@ -41,7 +41,7 @@ public class ClientResource {
 		Client client = this.service.findById(id);
 		return ResponseEntity.ok().body(client);
 	}
-	
+
 	@GetMapping(value = "/naturals")
 	public ResponseEntity<Client> findByCpf(@RequestParam(value = "cpf") String cpf) {
 		if (cpf.isEmpty() || cpf.isBlank()) {
@@ -50,16 +50,16 @@ public class ClientResource {
 		Client client = this.service.findByCpf(cpf);
 		return ResponseEntity.ok().body(client);
 	}
-	
+
 	@GetMapping(value = "/legals")
-	public ResponseEntity<Client> findByCnpj(@RequestParam(value = "cnpj") String cnpj ) {
+	public ResponseEntity<Client> findByCnpj(@RequestParam(value = "cnpj") String cnpj) {
 		if (cnpj.isEmpty() || cnpj.isBlank()) {
 			throw new IllegalArgumentException("The CNPJ can't be empty or blank");
 		}
 		Client client = this.service.findByCnpj(cnpj);
 		return ResponseEntity.ok().body(client);
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@RequestBody ClientDto clientDto, @PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
@@ -70,7 +70,7 @@ public class ClientResource {
 		client = this.service.update(client);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Void> insert(ClientDto clientDto) {
 		Client client = this.service.fromClientDto(clientDto);
@@ -78,23 +78,23 @@ public class ClientResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable String id) {
 		this.service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@DeleteMapping(value = "/naturals")
 	public ResponseEntity<Void> deleteByCpf(@RequestParam(value = "cpf") String cpf) {
 		this.service.deleteByCpf(cpf);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@DeleteMapping(value = "/legals")
 	public ResponseEntity<Void> deleteByCnpj(@RequestParam(value = "cnpj") String cnpj) {
 		this.service.deleteByCnpj(cnpj);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 }
