@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.dlcars.model.Client;
 import br.com.dlcars.model.dto.ClientDto;
+import br.com.dlcars.resource.exception.InvalidParamException;
 import br.com.dlcars.service.ClientService;
 
 @RestController
@@ -36,7 +37,7 @@ public class ClientResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Client> findById(@PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
-			throw new IllegalArgumentException("The id can't be empty or blank");
+			throw new InvalidParamException("The id can't be empty or blank");
 		}
 		Client client = this.service.findById(id);
 		return ResponseEntity.ok().body(client);
@@ -45,7 +46,7 @@ public class ClientResource {
 	@GetMapping(value = "/naturals")
 	public ResponseEntity<Client> findByCpf(@RequestParam(value = "cpf") String cpf) {
 		if (cpf.isEmpty() || cpf.isBlank()) {
-			throw new IllegalArgumentException("The CNPJ can't be empty or blank");
+			throw new InvalidParamException("The CNPJ can't be empty or blank");
 		}
 		Client client = this.service.findByCpf(cpf);
 		return ResponseEntity.ok().body(client);
@@ -54,7 +55,7 @@ public class ClientResource {
 	@GetMapping(value = "/legals")
 	public ResponseEntity<Client> findByCnpj(@RequestParam(value = "cnpj") String cnpj) {
 		if (cnpj.isEmpty() || cnpj.isBlank()) {
-			throw new IllegalArgumentException("The CNPJ can't be empty or blank");
+			throw new InvalidParamException("The CNPJ can't be empty or blank");
 		}
 		Client client = this.service.findByCnpj(cnpj);
 		return ResponseEntity.ok().body(client);
@@ -63,7 +64,7 @@ public class ClientResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@RequestBody ClientDto clientDto, @PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
-			throw new IllegalArgumentException("The id can't be empty or blank");
+			throw new InvalidParamException("The id can't be empty or blank");
 		}
 		Client client = this.service.fromClientDto(clientDto);
 		client.setId(id);

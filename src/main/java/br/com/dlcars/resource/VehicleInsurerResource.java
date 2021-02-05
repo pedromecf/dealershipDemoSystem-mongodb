@@ -28,8 +28,7 @@ public class VehicleInsurerResource {
 
 	@GetMapping
 	public ResponseEntity<List<VehicleInsurer>> findAll() {
-		List<VehicleInsurer> insurers = this.service.findAll();
-		return ResponseEntity.ok().body(insurers);
+		return ResponseEntity.ok().body(this.service.findAll());
 	}
 
 	@GetMapping(value = "/{id}")

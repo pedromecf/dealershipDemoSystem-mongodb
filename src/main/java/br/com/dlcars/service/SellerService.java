@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.dlcars.model.Dealership;
 import br.com.dlcars.model.Seller;
 import br.com.dlcars.model.dto.SellerDto;
 import br.com.dlcars.repository.SellerRepository;
@@ -20,20 +21,25 @@ public class SellerService {
 		return this.repository.findAll();
 	}
 
-	public List<Seller> findAllByDealership(String id) {
+	public List<Seller> findAllByDealership(Dealership dl) {
 		List<Seller> allSellers = this.findAll();
-		allSellers.removeIf(x -> !x.getDealership().getId().equals(id));
+		allSellers.removeIf(x -> !x.getDealership().getId().equals(dl.getId()));
 		if (allSellers.isEmpty()) {
-			throw new ObjectNotFoundException("The department id doesn't exists");
+			throw new ObjectNotFoundException("The dealership doesn't exists");
 		}
 		return allSellers;
 	}
 
-	public List<Seller> findAllByDealershipAndCharge(String id, String charge) {
-		List<Seller> dlSellers = this.findAllByDealership(id);
-		dlSellers.removeIf(x -> !x.getCharge().toLowerCase().equals(charge.toLowerCase()));
-		return dlSellers;
+
+	public List<Seller> findAllByCharge(String charge) {
+		List<Seller> allSellers = this.findAll();
+		allSellers.removeIf(x -> !x.getCharge().equals(charge));
+		if (allSellers.isEmpty()) {
+			throw new ObjectNotFoundException("There isn't any sellers of this charge");
+		}
+		return allSellers;
 	}
+
 
 	public Seller findById(String id) {
 		return this.repository.findById(id)

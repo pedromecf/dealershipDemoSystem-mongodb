@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-	@ExceptionHandler(value = IllegalArgumentException.class)
-	public ResponseEntity<StandardError> invalidParam(IllegalArgumentException error, HttpServletRequest request) {
+	@ExceptionHandler(value = InvalidParamException.class)
+	public ResponseEntity<StandardError> invalidParam(InvalidParamException error, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError stError = new StandardError(Instant.now(), status.value(), "Invalid parameter",
 				error.getMessage(), request.getRequestURI());

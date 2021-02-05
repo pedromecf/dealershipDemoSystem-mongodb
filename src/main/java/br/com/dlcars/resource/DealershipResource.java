@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.dlcars.model.Dealership;
+import br.com.dlcars.model.Seller;
 import br.com.dlcars.model.dto.DealershipDto;
+import br.com.dlcars.resource.exception.InvalidParamException;
 import br.com.dlcars.service.DealershipService;
 
 @RestController
@@ -34,9 +36,17 @@ public class DealershipResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Dealership> findById(@PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
-			throw new IllegalArgumentException("The id can't be empty or blank");
+			throw new InvalidParamException("The id can't be empty or blank");
 		}
 		return ResponseEntity.ok().body(this.service.findById(id));
+	}
+	
+	@PostMapping(value = "/dealership")
+	public ResponseEntity<Dealership> findBySeller(@RequestBody Seller seller) {
+		if (seller.getId() == null) {
+			throw new InvalidParamException("The seller doesn't exists");
+		}
+		return ResponseEntity.ok().body(this.service.findBySeller(seller));
 	}
 
 	@PostMapping
@@ -50,7 +60,7 @@ public class DealershipResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@RequestBody DealershipDto dlDto, @PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
-			throw new IllegalArgumentException("The id can't be empty or blank");
+			throw new InvalidParamException("The id can't be empty or blank");
 		}
 		Dealership dl = this.service.fromDealershipDto(dlDto);
 		dl = this.service.update(dl);
@@ -61,7 +71,7 @@ public class DealershipResource {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
-			throw new IllegalArgumentException("The id can't be empty or blank");
+			throw new InvalidParamException("The id can't be empty or blank");
 		}
 		this.service.deleteById(id);
 		return ResponseEntity.noContent().build();

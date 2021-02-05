@@ -30,59 +30,52 @@ public class VehicleResource {
 
 	@GetMapping
 	public ResponseEntity<List<Vehicle>> findAll() {
-		List<Vehicle> vehicles = this.service.findAll();
-		return ResponseEntity.ok().body(vehicles);
+		return ResponseEntity.ok().body(this.service.findAll());
 	}
 
 	@GetMapping(value = "/types")
 	public ResponseEntity<List<Vehicle>> findAllByType(@RequestParam(value = "type") String type) {
 		if (type.isEmpty() || type.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be empty or blank");
+			throw new IllegalArgumentException("The type can't be empty or blank");
 		}
 		type = URL.decodeParameter(type);
-		List<Vehicle> vehicles = this.service.findAllByType(type);
-		return ResponseEntity.ok().body(vehicles);
+		return ResponseEntity.ok().body(this.service.findAllByType(type));
 	}
 
 	@GetMapping(value = "/brands")
 	public ResponseEntity<List<Vehicle>> findAllByBrand(@RequestParam(value = "brand") String brand) {
 		if (brand.isEmpty() || brand.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be empty or blank");
+			throw new IllegalArgumentException("The brand can't be empty or blank");
 		}
 		brand = URL.decodeParameter(brand);
-		List<Vehicle> vehicles = this.service.findAllByBrand(brand);
-		return ResponseEntity.ok().body(vehicles);
+		return ResponseEntity.ok().body(this.service.findAllByBrand(brand));
 	}
 
 	@GetMapping(value = "/models")
 	public ResponseEntity<List<Vehicle>> findAllByModel(@RequestParam(value = "model") String model) {
 		if (model.isEmpty() || model.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be empty or blank");
+			throw new IllegalArgumentException("The model can't be empty or blank");
 		}
 		model = URL.decodeParameter(model);
-		System.out.println(model);
-		List<Vehicle> vehicles = this.service.findAllByModel(model);
-		return ResponseEntity.ok().body(vehicles);
+		return ResponseEntity.ok().body(this.service.findAllByModel(model));
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Vehicle> findById(@PathVariable String id) {
 		if (id.isEmpty() || id.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be empty or blank");
+			throw new IllegalArgumentException("The id can't be empty or blank");
 		}
-		Vehicle obj = this.service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		return ResponseEntity.ok().body(this.service.findById(id));
 	}
 
 	@GetMapping(value = "/plates")
 	public ResponseEntity<Vehicle> findByLicensePlate(@RequestParam(value = "plate") String licensePlate) {
 		if (licensePlate.isEmpty() || licensePlate.isBlank()) {
-			throw new IllegalArgumentException("The parameter can't be blank or empty");
+			throw new IllegalArgumentException("The license plate can't be blank or empty");
 		} else if (licensePlate.length() < 9 || licensePlate.length() > 9) {
 			throw new IllegalArgumentException("The license plate must follow the pattern (Example: XXXX-XXXX)");
 		}
-		Vehicle vehicle = this.service.findByLicensePlate(licensePlate);
-		return ResponseEntity.ok().body(vehicle);
+		return ResponseEntity.ok().body(this.service.findByLicensePlate(licensePlate));
 	}
 
 	@PostMapping

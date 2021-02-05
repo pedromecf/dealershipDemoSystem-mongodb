@@ -1,7 +1,6 @@
 package br.com.dlcars.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,41 +17,29 @@ public class ClientService {
 	private ClientRepository repository;
 
 	public List<Client> findAll() {
-		List<Client> clients = this.repository.findAll();
-		return clients;
+		return this.repository.findAll();
 	}
 
 	public Client findById(String id) {
-		Optional<Client> client = this.repository.findById(id);
-		return client.orElseThrow(() -> new ObjectNotFoundException("There isn't a client using this id"));
+		return this.repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("There isn't a client using this id"));
 	}
 
 	public Client findByCpf(String cpf) {
 		List<Client> allClients = this.findAll();
-		Client client = new Client();
-		for (Client c : allClients) {
-			if (c.getCpf().equals(cpf)) {
-				setClientData(client, c);
-			}
-		}
-		if (client.getId() == null) {
+		allClients.removeIf(x -> !x.getCpf().equals(cpf));
+		if (allClients.isEmpty()) {
 			throw new ObjectNotFoundException("There isn't a client using this CPF");
 		}
-		return client;
+		return allClients.get(0);
 	}
 
 	public Client findByCnpj(String cnpj) {
 		List<Client> allClients = this.findAll();
-		Client client = new Client();
-		for (Client c : allClients) {
-			if (c.getCnpj().equals(cnpj)) {
-				setClientData(client, c);
-			}
-		}
-		if (client.getId() == null) {
+		allClients.removeIf(x -> !x.getCnpj().equals(cnpj));
+		if (allClients.isEmpty()) {
 			throw new ObjectNotFoundException("There isn't a client using this CNPJ");
 		}
-		return client;
+		return allClients.get(0);
 	}
 
 	public Client insert(Client obj) {

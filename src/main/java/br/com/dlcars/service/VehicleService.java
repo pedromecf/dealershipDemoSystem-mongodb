@@ -1,8 +1,6 @@
 package br.com.dlcars.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,63 +22,42 @@ public class VehicleService {
 
 	public List<Vehicle> findAllByType(String type) {
 		List<Vehicle> allVehicles = this.repository.findAll();
-		List<Vehicle> typeVehicles = new ArrayList<>();
-		for (Vehicle v : allVehicles) {
-			if (v.getType().toLowerCase().contains(type.toLowerCase())) {
-				typeVehicles.add(v);
-			}
+		allVehicles.removeIf(x -> !x.getType().toLowerCase().equals(type.toLowerCase()));
+		if (allVehicles.isEmpty()) {
+			throw new ObjectNotFoundException("There are no vehicles of this type");
 		}
-		if (typeVehicles.isEmpty()) {
-			throw new ObjectNotFoundException("The parameter used in search doesn't exists");
-		}
-		return typeVehicles;
+		return allVehicles;
 	}
 
 	public List<Vehicle> findAllByBrand(String brand) {
 		List<Vehicle> allVehicles = this.repository.findAll();
-		List<Vehicle> brandVehicles = new ArrayList<>();
-		for (Vehicle v : allVehicles) {
-			if (v.getBrand().toLowerCase().contains(brand.toLowerCase())) {
-				brandVehicles.add(v);
-			}
+		allVehicles.removeIf(x -> !x.getBrand().toLowerCase().equals(brand.toLowerCase()));
+		if (allVehicles.isEmpty()) {
+			throw new ObjectNotFoundException("There are no vehicles of this brand");
 		}
-		if (brandVehicles.isEmpty()) {
-			throw new ObjectNotFoundException("The vehicle brand doens't exists");
-		}
-		return brandVehicles;
+		return allVehicles;
 	}
 
 	public List<Vehicle> findAllByModel(String model) {
 		List<Vehicle> allVehicles = this.findAll();
-		List<Vehicle> modelList = new ArrayList<>();
-		for (Vehicle v : allVehicles) {
-			if (v.getModel().toLowerCase().contains(model.toLowerCase())) {
-				modelList.add(v);
-			}
+		allVehicles.removeIf(x -> x.getModel().toLowerCase().equals(model.toLowerCase()));
+		if (allVehicles.isEmpty()) {
+			throw new ObjectNotFoundException("There are no vehicles of this model");
 		}
-		if (modelList.isEmpty()) {
-			throw new ObjectNotFoundException("There aren't any vehicles of this model");
-		}
-		return modelList;
+		return allVehicles;
 	}
 
 	public Vehicle findById(String id) {
-		Optional<Vehicle> vehicles = this.repository.findById(id);
-		return vehicles.orElseThrow(() -> new ObjectNotFoundException("There isn't a vehicle using this id"));
+		return this.repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("There isn't a vehicle using this id"));
 	}
 
 	public Vehicle findByLicensePlate(String licensePlate) {
-		Vehicle vehicle = new Vehicle();
-		List<Vehicle> vehicles = this.findAll();
-		for (Vehicle v : vehicles) {
-			if (v.getLicensePlate().toLowerCase().equals(licensePlate.toLowerCase())) {
-				this.setVehicleData(v, vehicle);
-			}
-		}
-		if (vehicle.getId() == null) {
+		List<Vehicle> allVehicles = this.findAll();
+		allVehicles.removeIf(x -> !x.getLicensePlate().equals(licensePlate));
+		if (allVehicles.isEmpty()) {
 			throw new ObjectNotFoundException("There isn't a vehicle using this license plate");
 		}
-		return vehicle;
+		return allVehicles.get(0);
 	}
 
 	public Vehicle insert(Vehicle obj) {
@@ -100,44 +77,29 @@ public class VehicleService {
 
 	public void deleteByBrand(String brand) {
 		List<Vehicle> allVehicles = this.findAll();
-		List<Vehicle> brandVehicles = new ArrayList<>();
-		for (Vehicle v : allVehicles) {
-			if (v.getBrand().toLowerCase().equals(brand.toLowerCase())) {
-				brandVehicles.add(v);
-			}
-		}
-		if (brandVehicles.isEmpty()) {
+		allVehicles.removeIf(x -> !x.getBrand().toLowerCase().equals(brand.toLowerCase()));
+		if (allVehicles.isEmpty()) {
 			throw new ObjectNotFoundException("The brand doesn't exists");
 		}
-		this.repository.deleteAll(brandVehicles);
+		this.repository.deleteAll(allVehicles);
 	}
 
 	public void deleteByModel(String model) {
 		List<Vehicle> allVehicles = this.findAll();
-		List<Vehicle> modelVehicles = new ArrayList<>();
-		for (Vehicle v : allVehicles) {
-			if (v.getModel().toLowerCase().equals(model.toLowerCase())) {
-				modelVehicles.add(v);
-			}
-		}
-		if (modelVehicles.isEmpty()) {
+		allVehicles.removeIf(x -> !x.getModel().toLowerCase().equals(model.toLowerCase()));
+		if (allVehicles.isEmpty()) {
 			throw new ObjectNotFoundException("The vehicle model doesn't exists");
 		}
-		this.repository.deleteAll(modelVehicles);
+		this.repository.deleteAll(allVehicles);
 	}
 
 	public void deleteByLicensePlate(String licensePlate) {
 		List<Vehicle> allVehicles = this.repository.findAll();
-		Vehicle vehicle = new Vehicle();
-		for (Vehicle v : allVehicles) {
-			if (v.getLicensePlate().toUpperCase().equals(licensePlate.toUpperCase())) {
-				this.setVehicleData(v, vehicle);
-			}
-		}
-		if (vehicle.getId() == null) {
+		allVehicles.removeIf(x -> !x.getLicensePlate().equals(licensePlate));
+		if (allVehicles.isEmpty()) {
 			throw new ObjectNotFoundException("There isn't a vehicle using this license plate");
 		}
-		this.repository.delete(vehicle);
+		this.repository.deleteAll(allVehicles);
 	}
 
 	public void setVehicleData(Vehicle obj, Vehicle newObj) {

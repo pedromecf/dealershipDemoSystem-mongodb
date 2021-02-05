@@ -1,7 +1,6 @@
 package br.com.dlcars.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +17,11 @@ public class VehicleInsurerService {
 	private VehicleInsurerRepository repository;
 
 	public List<VehicleInsurer> findAll() {
-		List<VehicleInsurer> insurers = this.repository.findAll();
-		return insurers;
+		return this.repository.findAll();
 	}
 
 	public VehicleInsurer findById(String id) {
-		Optional<VehicleInsurer> insurer = this.repository.findById(id);
-		return insurer.orElseThrow(() -> new ObjectNotFoundException("There isn't a insurer using this id"));
+		return this.repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("There isn't a insurer using this id"));
 	}
 
 	public VehicleInsurer insert(VehicleInsurer obj) {

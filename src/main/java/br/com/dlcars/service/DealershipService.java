@@ -1,6 +1,7 @@
 package br.com.dlcars.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,17 +29,11 @@ public class DealershipService {
 
 	public Dealership findBySeller(Seller seller) {
 		List<Dealership> dealerships = this.findAll();
-		try {
-			Dealership dealership = new Dealership();
-			for (Dealership d : dealerships) {
-				if (seller.getDealership().getId().equals(d.getId())) {
-					setDealershipData(dealership, d);
-				}
-			}
-			return dealership;
-		} catch (NullPointerException e) {
-			throw new ObjectNotFoundException("There's no dealership handling this seller");
+		dealerships.stream().filter(x -> x.getId().equals(seller.getDealership().getId())).collect(Collectors.toList());
+		if (dealerships.isEmpty()) {
+			throw new ObjectNotFoundException("There isn't any dealership with this employee");
 		}
+		return dealerships.get(0);
 	}
 
 	public Dealership insert(Dealership obj) {

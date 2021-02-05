@@ -70,7 +70,8 @@ public class Instantiation implements CommandLineRunner {
 		InsurerVehicleDto vdt4 = new InsurerVehicleDto(vd4);
 		InsurerVehicleDto vdt5 = new InsurerVehicleDto(vd5);
 		InsurerVehicleDto vdt6 = new InsurerVehicleDto(vd6);
-
+		
+		//add vehicles to insurer
 		c1.getVehicles().add(vdt1);
 		c1.getVehicles().add(vdt2);
 		c1.getVehicles().add(vdt3);
@@ -110,11 +111,11 @@ public class Instantiation implements CommandLineRunner {
 		SellerDto emp5 = new SellerDto(s5);
 		SellerDto emp6 = new SellerDto(s6);
 
-		// Add employees
+		// Add sellers
 		dl1.getEmployess().addAll(Arrays.asList(emp1, emp2, emp3));
 		dl2.getEmployess().addAll(Arrays.asList(emp4, emp5, emp6));
 
-		// Add vehicles
+		// Add vehicles to dealership
 		dl1.getVehicles().addAll(Arrays.asList(vd1, vd2, vd3));
 		dl2.getVehicles().addAll(Arrays.asList(vd4, vd5, vd6));
 
