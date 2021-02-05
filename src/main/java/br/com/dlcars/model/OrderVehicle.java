@@ -94,7 +94,7 @@ public class OrderVehicle implements Serializable {
 		this.status = status;
 	}
 
-	public OrderVehicle executeOrder(Client client, Vehicle vehicle, OrderVehicle order, OrderVehicleStatus status) {
+	public OrderVehicle executeOrder(Client client, Vehicle vehicle, OrderVehicle order, String status) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		sdf.setTimeZone(TimeZone.getTimeZone("Brazil"));
 		client.setVehicle(Util.toClientVehicleDto(vehicle));
@@ -103,11 +103,11 @@ public class OrderVehicle implements Serializable {
 		order.setClientId(client.getId());
 		order.setCost(vehicle.getValue());
 		order.setOrderDate(Instant.now());
-		order.setStatus(OrderVehicleStatus.valueOf("PAID"));
+		order.setStatus(OrderVehicleStatus.valueOf(status.toUpperCase()));
 		try {
 			order.setDeliveryDate(sdf.parse(Long.toString(System.currentTimeMillis() + 72 * 60 * 60 * 1000)));
 		} catch (ParseException e) {
-			throw new IllegalStateException("Error at date while ordering the vehicle");
+			throw new IllegalStateException("Error at delivery date");
 		}
 		return order;
 	}

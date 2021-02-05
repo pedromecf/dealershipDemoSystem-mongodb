@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import br.com.dlcars.model.dto.ClientDto;
 import br.com.dlcars.model.dto.SellerDto;
 import br.com.dlcars.model.dto.VehicleDto;
-import br.com.dlcars.model.enums.OrderVehicleStatus;
 import br.com.dlcars.model.util.Util;
 import br.com.dlcars.resource.exception.ObjectUnavailableException;
 
@@ -109,7 +108,7 @@ public class Dealership implements Serializable {
 		return false;
 	}
 
-	public OrderVehicle sellVehicle(ClientDto clientDto, Vehicle vehicle, OrderVehicleStatus status)
+	public OrderVehicle sellVehicle(ClientDto clientDto, Vehicle vehicle, String status)
 			throws ParseException {
 		if (!vehicleAvailable(vehicle)) {
 			throw new ObjectUnavailableException("The vehicle is unavailable");
